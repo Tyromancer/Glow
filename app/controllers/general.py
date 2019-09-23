@@ -1,5 +1,4 @@
-from flask import Blueprint, render_template, session, redirect, url_for, \
-	request, flash, g, jsonify, abort
+from flask import Blueprint, render_template, session, redirect, url_for, request, flash, g, jsonify, abort
 
 mod = Blueprint('general', __name__)
 
@@ -8,7 +7,8 @@ mod = Blueprint('general', __name__)
 def index():
 
 	#	必须要登陆后才能浏览网站信息
-	session['usr'] = 'Admin'
+#	session['usr'] = 'Admin'
+	session.clear()
 	if 'usr' in session:
 		return redirect(url_for('general.home', usr=session['usr']))
 	else:

@@ -17,3 +17,17 @@ def loginForm():
 		if code == 'success':
 			return redirect(url_for('general.home', usr=session['usr']))
 	return code
+	
+@mod.route('/signupForm', methods=['GET','POST'])
+def signupForm():
+	code = 'fail'
+	if request.method == 'POST':
+		usr = request.form['usr']
+		pwd = request.form['pwd']
+		
+#TODO: 从数据库验证注册数据适合valid(如usr已被注册)，如valid则更新数据库并跳转到home，如不对返回fail及原因
+		
+		code = 'success'
+		if code == 'success':
+			return redirect(url_for('general.home', usr=session['usr']))
+	return code
