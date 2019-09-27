@@ -56,10 +56,10 @@ signupSubmit = {
 		var url = "/signupForm";
 		$.post(url, data, function(result){
 			console.log(result)
-			if (result != 'success'){
-				$('form :input').val('');
-			} else {
+			if (result[0]){
 				
+			} else {
+				$('form :input').val('');
 			}
 		});
 	}
