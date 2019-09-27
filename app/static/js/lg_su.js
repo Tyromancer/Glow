@@ -21,11 +21,13 @@ loginSubmit = {
 	createTask: function(data){
 		var url = "/loginForm";
 		$.post(url, data, function(result){
+			var result = JSON.parse(result)
 			console.log(result)
-			if (result != 'success'){
-				$('form :input').val('');
+			if (result.re){
+				window.location.href = result.action
 			} else {
-				
+				$('form :input').val('');
+				$('#form-bot').prepend("<b style='color:white;'>"+result.action+"</b>");
 			}
 		});
 	}
@@ -55,11 +57,13 @@ signupSubmit = {
 	createTask: function(data){
 		var url = "/signupForm";
 		$.post(url, data, function(result){
+			var result = JSON.parse(result)
 			console.log(result)
-			if (result[0]){
-				
+			if (result.re){
+				window.location.href = result.action
 			} else {
 				$('form :input').val('');
+				$('#form-bot').prepend("<b style='color:white;'>"+result.action+"</b>");
 			}
 		});
 	}
