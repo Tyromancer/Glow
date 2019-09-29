@@ -40,5 +40,7 @@ class City(db.Model):
 	state = db.Column(db.String(2), doc='State Abbreviation', nullable=False)
 	longitude = db.Column(db.Float, doc='Longitude', nullable=False)
 	latitude = db.Column(db.Float, doc='Latitude', nullable=False)
-	
-	
+
+
+# database table initialization
+db.create_all()
