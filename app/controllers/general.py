@@ -37,11 +37,11 @@ def home(usr=None):
 	else:
 		return render_template('home.html', usr=session['usr'])
 
-@mod.route('/post/<city>')
-def post(city=None):
+@mod.route('/post/<state>/<city>')
+def post(state=None, city=None):
 
 	#	render all city names onto the page
 	all_query_from_city =  db.session.query(City.cityname, City.state).all()
 	formattd_city_dict = utils.format_cities(all_query_from_city)
 
-	return render_template('post.html', city=json.dumps(formattd_city_dict))
+	return render_template('post.html', cities=formattd_city_dict)
