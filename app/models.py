@@ -31,3 +31,14 @@ class User(db.Model):
 #			return None  # invalid token
 #		user = User.query.get(data['id'])
 #		return user
+		
+class City(db.Model):
+	__tablename__ = 'cities'
+	
+	id = db.Column(db.Integer, primary_key=True)
+	cityname = db.Column(db.String(20), doc='City Name', nullable=False)
+	state = db.Column(db.String(2), doc='State Abbreviation', nullable=False)
+	longitude = db.Column(db.Float, doc='Longitude', nullable=False)
+	latitude = db.Column(db.Float, doc='Latitude', nullable=False)
+	
+	
