@@ -50,5 +50,7 @@ def demand(state=None, city=None):
 	cid = db.session.query(City.id).filter(db.and_(City.state==state, City.cityname==city)).one()
 	
 	demands_in_the_city = db.session.query(Demand.userId, Demand.role, Demand.goal, Demand.price).filter(Demand.cityId==cid[0]).all()
+	
+	formatted_demands = utils.format_demands(demands_in_the_city)
 
-	return render_template('demand.html', cities=formattd_city_dict, demands=demands_in_the_city)
+	return render_template('demand.html', cities=formattd_city_dict, demands=formatted_demands)
