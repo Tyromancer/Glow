@@ -2,9 +2,10 @@ from flask import Blueprint, render_template, session, redirect, url_for, reques
 
 import json
 
-from app.controllers import utils
+from app import app
 
 from app import db
+from app.controllers import utils
 from app.models import City
 from app.models import Demand
 
@@ -46,10 +47,12 @@ def demand(stateCode=None, city=None):
 	formatted_city_dict = utils.format_cities(all_query_from_city)
 	#	get the matched cityId from City Model and fetch demands in this city
 	cid = db.session.query(City.id).filter(db.and_(City.stateCode==stateCode, City.cityname==city)).one()[0]
-	print(cid)
+	
+	if app.debug:
+		print(cid)
 	
 	demands_in_the_city = db.session.query(Demand.userId, Demand.role, Demand.goal, Demand.price).filter(Demand.cityId==cid).all()
-	
+	# format demands for front end
 	formatted_demands = utils.format_demands(demands_in_the_city)
 
 	return render_template('demand.html', cities=formatted_city_dict, demands=formatted_demands)

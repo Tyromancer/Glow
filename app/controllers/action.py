@@ -3,6 +3,7 @@ from flask import Blueprint, render_template, session, redirect, url_for, reques
 import json
 
 from app.models import User
+from app.models import City
 from app import db
 
 mod = Blueprint('action', __name__)
@@ -41,3 +42,10 @@ def signupForm():
 		return json.dumps({'re': not code, 'action': url_for('general.home', usr=session['usr'])})
 	else:
 		return json.dumps({'re': not code, 'action': "The username has existed."})
+
+@mod.route('/stateCode', methods=['GET','POST'])
+def stateCode(_stateCode=None):
+	if request.method == 'POST':
+		_state = request.form['state']
+		_stateCode = db.session.query(City.stateCode).filter(City.state==_state).first()[0]
+	return _stateCode;
