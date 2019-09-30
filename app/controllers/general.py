@@ -38,19 +38,18 @@ def home(usr=None):
 	else:
 		return render_template('home.html', usr=session['usr'])
 
-@mod.route('/demand/<state>/<city>')
-def demand(state=None, city=None):
+@mod.route('/demand/<stateCode>/<city>')
+def demand(stateCode=None, city=None):
 
 	#	render all city names onto the page
-	all_query_from_city =  db.session.query(City.cityname, City.state).all()
-	formattd_city_dict = utils.format_cities(all_query_from_city)
-
-	#	TODO: fetch demands from the database and render onto the page
+	all_query_from_city =  db.session.query(City.cityname, City.state, City.stateCode).all()
+	formatted_city_dict = utils.format_cities(all_query_from_city)
 	#	get the matched cityId from City Model and fetch demands in this city
-	cid = db.session.query(City.id).filter(db.and_(City.state==state, City.cityname==city)).one()
+	cid = db.session.query(City.id).filter(db.and_(City.stateCode==stateCode, City.cityname==city)).one()[0]
+	print(cid)
 	
-	demands_in_the_city = db.session.query(Demand.userId, Demand.role, Demand.goal, Demand.price).filter(Demand.cityId==cid[0]).all()
+	demands_in_the_city = db.session.query(Demand.userId, Demand.role, Demand.goal, Demand.price).filter(Demand.cityId==cid).all()
 	
 	formatted_demands = utils.format_demands(demands_in_the_city)
 
-	return render_template('demand.html', cities=formattd_city_dict, demands=formatted_demands)
+	return render_template('demand.html', cities=formatted_city_dict, demands=formatted_demands)
