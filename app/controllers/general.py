@@ -6,6 +6,7 @@ from app.controllers import utils
 
 from app import db
 from app.models import City
+from app.models import Demand
 
 
 mod = Blueprint('general', __name__)
@@ -37,11 +38,17 @@ def home(usr=None):
 	else:
 		return render_template('home.html', usr=session['usr'])
 
-@mod.route('/post/<state>/<city>')
-def post(state=None, city=None):
+@mod.route('/demand/<state>/<city>')
+def demand(state=None, city=None):
 
 	#	render all city names onto the page
 	all_query_from_city =  db.session.query(City.cityname, City.state).all()
 	formattd_city_dict = utils.format_cities(all_query_from_city)
 
-	return render_template('post.html', cities=formattd_city_dict)
+	#	TODO: fetch demands from the database and render onto the page
+	#	get the matched cityId from City Model and fetch demands in this city
+	cid = db.session.query(City.id).filter(db.and_(City.state==state, City.cityname==city)).one()
+	
+	demands_in_the_city = db.session.query(Demand.userId, Demand.role, Demand.goal, Demand.price).filter(Demand.cityId==cid[0]).all()
+
+	return render_template('demand.html', cities=formattd_city_dict, demands=demands_in_the_city)
